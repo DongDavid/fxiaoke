@@ -1,0 +1,20 @@
+{
+    "name": "dongdavid\/fxiaoke",
+    "description": "纷享销客SDK",
+    "license": "MIT",
+    "require": {
+        "guzzlehttp/guzzle": "^7.3",
+        "phpunit/phpunit": "^9.5"
+    },
+    "require-dev": {
+        "mockery/mockery":  "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "Dongdavid\\Fxiaoke\\": "src"
+        },
+        "files": [
+            "src/helper.php"
+        ]
+    }
+}
