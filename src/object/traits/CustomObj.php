@@ -3,7 +3,7 @@
 namespace Dongdavid\Fxiaoke\object\traits;
 
 use Dongdavid\Fxiaoke\utils\Http;
-
+use Dongdavid\Fxiaoke\Authentication;
 /**
  * 
  */
@@ -19,7 +19,7 @@ trait CustomObj
     protected $urlLock = 'https://open.fxiaoke.com/cgi/crm/v2/object/lock';
     protected $urlUnlock = 'https://open.fxiaoke.com/cgi/crm/v2/object/unlock';
 
-    protected $apiName = '';
+    // protected $apiName = '';
 
     private $err = [];
 
@@ -41,11 +41,7 @@ trait CustomObj
     }
     private function setParam($param)
     {
-        $base = [
-            'corpAccessToken' => '',
-            'corpId' => '',
-            'currentOpenUserId' => '',
-        ];
+        $base = Authentication::getUserAuthenticationParam($this->config);
         return array_merge($base, $param);
     }
     private function httpPost($url, $param)

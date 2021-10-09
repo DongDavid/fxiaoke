@@ -2,8 +2,7 @@
 namespace Dongdavid\Fxiaoke;
 
 use Dongdavid\Fxiaoke\object\CustomerObj;
-use Dongdavid\Fxiaoke\utils\Http;
-use Dongdavid\Fxiaoke\utils\Redis;
+use Dongdavid\Fxiaoke\object\AccountObj;
 
 class Fxiaoke
 {

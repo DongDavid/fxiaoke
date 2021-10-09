@@ -2,6 +2,8 @@
 
 namespace Dongdavid\Fxiaoke\object\traits;
 
+use Dongdavid\Fxiaoke\Authentication;
+use Dongdavid\Fxiaoke\Fxiaoke;
 use Dongdavid\Fxiaoke\utils\Http;
 
 /**
@@ -18,7 +20,7 @@ trait PreSetObj
     protected $urlChangeowner = 'https://open.fxiaoke.com/cgi/crm/v2/data/changeOwner';
     protected $urlLock = 'https://open.fxiaoke.com/cgi/crm/v2/object/lock';
     protected $urlUnlock = 'https://open.fxiaoke.com/cgi/crm/v2/object/unlock';
-    protected $apiName = '';
+    // protected $apiName = '';
 
     private $err = [];
 
@@ -33,18 +35,14 @@ trait PreSetObj
     {
         $this->err[] = [
             'url' => $url,
-            'param' => $param,
+            'param' => json_encode($param,JSON_UNESCAPED_UNICODE),
             'response' => $response,
             'msg' => isset($response['errorMessage']) ? $response['errorMessage'] : '没有错误信息',
         ];
     }
     private function setParam($param)
     {
-        $base = [
-            'corpAccessToken' => '',
-            'corpId' => '',
-            'currentOpenUserId' => '',
-        ];
+        $base = Authentication::getUserAuthenticationParam($this->config);
         return array_merge($base, $param);
     }
     private function httpPost($url, $param)
@@ -73,11 +71,23 @@ trait PreSetObj
                     'limit' => $limit,
                     'filters' => $filters,
                     'order' => $order,
-                    'fieldProjection' => $fieldProjection,
                     'find_explicit_total_num' => $find_explicit_total_num,
                 ],
             ]
         ];
+        $search_query_info = [
+            'offset' => $offset,
+            'limit' => $limit,
+        ];
+        if(!empty($filters)){
+            $search_query_info['filters'] = $filters;
+        }
+        if(!empty($fieldProjection)){
+            $search_query_info['fieldProjection'] = $fieldProjection;
+        }
+        if(!empty($order)){
+            $search_query_info['order'] = $order;
+        }
         return $this->httpPost($this->urlQuery, $param);
     }
 
