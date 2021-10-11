@@ -6,7 +6,7 @@ use Dongdavid\Fxiaoke\utils\Redis;
 
 class Authentication {
 
-    
+
 
     public static function getAccessToken($appId,$appSecret,$permanentCode)
     {
@@ -21,8 +21,6 @@ class Authentication {
             'appSecret' => $appSecret,
             'permanentCode' => $permanentCode,
         ];
-        var_dump($param);
-        exit();
         $res = Http::post($url, $param);
         if ($res && isset($res['errorCode']) && $res['errorCode'] == 0) {
             $res['expires_time'] = date('Y-m-d H:i:s',time()+$res['expiresIn']-200);
@@ -32,12 +30,9 @@ class Authentication {
         throw new \Exception("获取corpAccessToken失败");
     }
 
-    public static function getAuthenticationParam($config){
-        echo "???";
-        var_dump($config);
-        list($appId,$appSecret,$permanentCode) = $config;
-        var_dump([$appId,$appSecret,$permanentCode]);
-        $data = self::getAccessToken($appId,$appSecret,$permanentCode);
+    public static function getAuthenticationParam($config): array
+    {
+        $data = self::getAccessToken($config['appId'],$config['appSecret'],$config['permanentCode']);
         return [
             'corpAccessToken'=>$data['corpAccessToken'],
             'corpId'=>$data['corpId'],
@@ -58,8 +53,9 @@ class Authentication {
             return $openUserId;
         }
         $url = 'https://open.fxiaoke.com/cgi/user/getByMobile';
-        list($appId,$appSecret,$permanentCode) = $config;
-        $param = self::getAccessToken($appId,$appSecret,$permanentCode);
+
+
+        $param = self::getAccessToken($config['appId'],$config['appSecret'],$config['permanentCode']);
         $param['mobile'] = $config['mobile'];
         $res = Http::post($url,$param);
         if ($res && isset($res['errorCode']) && $res['errorCode'] == 0) {

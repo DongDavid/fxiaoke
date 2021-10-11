@@ -7,7 +7,7 @@ use Dongdavid\Fxiaoke\object\AccountObj;
 class Fxiaoke
 {
 
-    private $config = [
+    private array $config = [
         'appId'=>'',
         'appSecret'=>'',
         'permanentCode'=>'',
@@ -17,15 +17,15 @@ class Fxiaoke
     public function __construct($config){
         $this->config = $config;
     }
-   
-    public function customerObj($apiName){
-        $customerObj = new CustomerObj($apiName,$this->config);
-        return $customerObj;
+
+    public function customerObj($apiName): CustomerObj
+    {
+        return new CustomerObj($apiName,$this->config);
     }
 
-    public function accountObj(){
-        $accountObj = new AccountObj($this->config);
-        return $accountObj;
+    public function accountObj(): AccountObj
+    {
+        return new AccountObj($this->config);
     }
 
 
